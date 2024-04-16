@@ -6,7 +6,7 @@
 /*   By: hmoukit <hmoukit@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 21:13:32 by hmoukit           #+#    #+#             */
-/*   Updated: 2024/04/01 03:04:48 by hmoukit          ###   ########.fr       */
+/*   Updated: 2024/04/16 17:03:53 by hmoukit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	signal_handler(int sig, siginfo_t *info, void *context)
 {
-	static char	c = 0;
-	static int	k = 7;
-	static pid_t client_pid = -1;
+	static char		c = 0;
+	static int		k = 7;
+	static pid_t	client_pid = -1;
 
 	(void)context;
 	if (client_pid == -1)

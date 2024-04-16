@@ -6,7 +6,7 @@
 /*   By: hmoukit <hmoukit@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 06:11:09 by hmoukit           #+#    #+#             */
-/*   Updated: 2024/04/16 15:06:11 by hmoukit          ###   ########.fr       */
+/*   Updated: 2024/04/16 17:02:14 by hmoukit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,39 +16,6 @@ void	send_back_sig(char c, pid_t client_pid)
 {
 	if (c == '\0')
 		kill(client_pid, SIGUSR1);
-}
-
-void	ft_putstr(char *buffer, int count)
-{
-	write(1, buffer, count);
-}
-
-int	check_byte(char c)
-{
-	static int count = 1;
-
-	if (count == 1)
-	{
-		if ((c & 0xC0) == 0xC0)
-			count = 2;
-		if ((c & 0xE0) == 0xE0)
-			count = 3;
-		if ((c & 0xF0) == 0xF0)
-			count = 4;
-	}
-	return (count);
-}
-
-void initialize_buffer(char (*buffer)[4])
-{
-	int	i;
-
-	i = 0;
-	while (i < 4)
-	{
-		(*buffer)[i] = 0;
-		i++;
-	}
 }
 
 void	handle_unicode(char c, int *count, int z)
@@ -77,7 +44,8 @@ void	handle_unicode(char c, int *count, int z)
 
 void	make_char(char *c, int sig, int *k, pid_t c_pid)
 {
-	static int count = 0;
+	static int	count = 0;
+
 	if (sig == SIGUSR1)
 		*c += 0 << *k;
 	else
@@ -91,14 +59,12 @@ void	make_char(char *c, int sig, int *k, pid_t c_pid)
 		{
 			write(1, &(*c), 1);
 			count = 0;
-			if (*c == '\0')
-				kill(c_pid, SIGUSR1);
+			send_back_sig(*c, c_pid);
 		}
 		else
 		{
 			handle_unicode(*c, &count, 0);
-			if (*c == '\0')
-				kill(c_pid, SIGUSR1);
+			send_back_sig(*c, c_pid);
 		}
 		*c = 0;
 		*k = 7;
@@ -107,10 +73,12 @@ void	make_char(char *c, int sig, int *k, pid_t c_pid)
 
 void	signal_handler(int sig, siginfo_t *info, void *context)
 {
-	static char	c = 0;
-	static int	k = 7;
-	static pid_t client_pid = -1;
-	int count = 0;
+	static char		c = 0;
+	static int		k = 7;
+	static pid_t	client_pid = -1;
+	int				count;
+
+	count = 0;
 	(void)context;
 	if (client_pid == -1)
 		client_pid = info->si_pid;

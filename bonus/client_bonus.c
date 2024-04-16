@@ -6,7 +6,7 @@
 /*   By: hmoukit <hmoukit@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 06:11:07 by hmoukit           #+#    #+#             */
-/*   Updated: 2024/03/19 04:48:40 by hmoukit          ###   ########.fr       */
+/*   Updated: 2024/04/01 03:05:13 by hmoukit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	send_msg(char **av, int pid)
 			else
 				kill(pid, SIGUSR1);
 			j--;
-			usleep(500);
+			usleep(400);
 		}
 		i++;
 	}
@@ -60,7 +60,7 @@ int	main(int ac, char **av)
 			else
 				kill(pid, SIGUSR1);
 			j--;
-			usleep(500);
+			usleep(400);
 		}
 	}
 	return (0);
